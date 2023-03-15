@@ -21,9 +21,9 @@ app.get('/', function(req, res) {
   })
 })
 
-app.get('/users', function(req, res) {
+app.get('/customer', function(req, res) {
     connection.query(
-      'SELECT * FROM user',
+      'SELECT * FROM a1_customer',
       function(err, results) {
         console.log(results) //แสดงผลที่ console
         res.json(results) //ตอบกลับ request
@@ -31,10 +31,18 @@ app.get('/users', function(req, res) {
     )
   })
   
-  app.get('/pets', function(req, res) {
+  app.get('/item', function(req, res) {
     connection.query(
-      `SELECT pet.id, pet.petName, pet.userId, user.fullname AS owner 
-       FROM pet LEFT JOIN user ON pet.userId = user.id;`,
+      `SELECT * FROM a1_item`,
+       function(err, results) {
+        res.json(results)
+       }
+    )
+  })
+
+  app.get('/order', function(req, res) {
+    connection.query(
+      `SELECT * FROM a1_order`,
        function(err, results) {
         res.json(results)
        }
