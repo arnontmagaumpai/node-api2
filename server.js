@@ -63,11 +63,11 @@ app.get('/customer', function(req, res) {
     )
   })
   
-  app.get('/pets_price', function(req, res){
+  app.get('/item_price', function(req, res){
     connection.query(
-      `SELECT id, petName, price
-       FROM pet
-       ORDER BY price;`,
+      `SELECT id, name, price
+      FROM a1_item
+      ORDER BY price;`,
        function(err, results) {
         res.json(results)
        }
