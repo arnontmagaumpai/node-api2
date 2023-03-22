@@ -49,20 +49,7 @@ app.get('/customer', function(req, res) {
     )
   })
   
-  app.post('/users', function(req, res) {
-    const email = req.body.email
-    const fullname = req.body.fullname
-    const city = req.body.city
-    connection.query(
-      `INSERT INTO user (email, fullname, city) VALUES (?, ?, ?)`,
-      [email, fullname, city],
-      function(err, results) {
-        if (err) { res.json(err) }
-        res.json(results)
-      }
-    )
-  })
-  
+
   app.get('/item_price', function(req, res){
     connection.query(
       `SELECT id, name, price
@@ -74,6 +61,20 @@ app.get('/customer', function(req, res) {
     )
   })
   
+  app.get('/item_top', function(req, res){
+    connection.query(
+      `SELECT i.orderId, SUM(o.quantity) AS TopSell
+      FROM a1_item i
+      LEFT JOIN a1_order o
+      ON o.orderId = i.orderId
+      GROUP BY i.orderId  
+      ORDER BY TopSell DESC`,
+       function(err, results) {
+        res.json(results)
+       }
+    )
+  })
+
   app.get('/pets_price_chart', function(req, res){
     connection.query(
       `SELECT id, petName, price
@@ -92,6 +93,21 @@ app.get('/customer', function(req, res) {
        }
     )
   })
+
+
+  app.post('/order', function(req, res) {
+    const values = req.body
+    console.log(values)
+    connection.query(
+      'INSERT INTO a1_order (orderId, customerId, product_order, quantity) VALUES ?', [values],
+      function(err, results) {
+        console.log(results) //แสดงผลที่ console
+        res.json(results) //ตอบกลับ request
+      }
+    )
+  })
+  
+  
   
   app.listen(5000, () => {
     console.log('Server is started.')
